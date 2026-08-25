@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signature Dispatch — Every Call Answered. Every Job Caught.</title>
+<meta name="description" content="The 24/7 AI dispatcher for tow companies. Answers in one ring, quotes your rates, books the job, texts your driver — while you're driving, hooking, or sleeping.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #14161A; --surface: #1C1F25; --surface-2: #22252C;
+    --ink: #ECEAE3; --muted: #A0A4AC;
+    --line: #2C3038; --line-strong: #3E434D;
+    --amber: #F0A62E; --amber-deep: #C07A0E;
+    --good: #5CB588; --bad: #E07B62;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: "Barlow", "Helvetica Neue", Arial, sans-serif; font-size: 1.05rem; line-height: 1.6; margin: 0; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 0 1.25rem; }
+  .hazard { height: 10px; background: repeating-linear-gradient(-45deg, var(--amber) 0 16px, transparent 16px 32px); }
+  .display { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; }
+
+  header.hero { padding: 4.5rem 0 3.5rem; text-align: left; }
+  .brand { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: .18em; text-transform: uppercase; color: var(--amber); margin: 0 0 2.2rem; }
+  h1 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: clamp(3rem, 9vw, 5.5rem); line-height: .96; text-transform: uppercase; margin: 0 0 1.2rem; max-width: 16ch; }
+  h1 .amber { color: var(--amber); }
+  .standfirst { font-size: 1.3rem; color: var(--muted); max-width: 34rem; margin: 0 0 2rem; }
+  .standfirst strong { color: var(--ink); }
+  .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn { display: inline-block; font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1.25rem; text-transform: uppercase; letter-spacing: .05em; padding: .85rem 1.8rem; text-decoration: none; border-radius: 4px; }
+  .btn-amber { background: var(--amber); color: #14161A; }
+  .btn-amber:hover { background: #F6BE62; }
+  .btn-ghost { border: 2px solid var(--line-strong); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--amber); }
+
+  .statband { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--line); }
+  .stat { background: var(--surface); padding: 1.6rem 1.4rem; }
+  .stat .n { font-family: "IBM Plex Mono", monospace; font-size: 2.2rem; font-weight: 600; color: var(--bad); display: block; line-height: 1.1; }
+  .stat .l { color: var(--muted); font-size: .92rem; }
+
+  section { padding: 4rem 0 0; }
+  h2 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: clamp(2rem, 5vw, 2.8rem); text-transform: uppercase; line-height: 1.02; margin: 0 0 1rem; }
+  .lead { color: var(--muted); max-width: 40rem; font-size: 1.15rem; margin: 0 0 2rem; }
+  .lead strong { color: var(--ink); }
+
+  .pains { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+  .pain { background: var(--surface); border: 1px solid var(--line); padding: 1.4rem 1.5rem; }
+  .pain h3 { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.35rem; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 .5rem; color: var(--amber); }
+  .pain p { margin: 0; color: var(--muted); font-size: .98rem; }
+  .pain p strong { color: var(--ink); }
+
+  .demo { background: var(--surface); border: 1px solid var(--amber-deep); border-top: 5px solid var(--amber); padding: 2.2rem 2rem; margin-top: 2.5rem; }
+  .citypick { display: flex; gap: .7rem; flex-wrap: wrap; margin: 1.4rem 0 1rem; }
+  .city { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 1.1rem; letter-spacing: .05em; text-transform: uppercase; background: var(--surface-2); color: var(--ink); border: 2px solid var(--line-strong); padding: .55rem 1.2rem; border-radius: 4px; cursor: pointer; }
+  .city.active { border-color: var(--amber); color: var(--amber); }
+  .demo .hint { color: var(--muted); font-size: .95rem; margin: .8rem 0 0; }
+  .demo .hint strong { color: var(--ink); }
+  #widget-slot { min-height: 40px; margin-top: 1rem; }
+  .fallback { margin-top: .6rem; font-size: .95rem; }
+  .fallback a { color: var(--amber); }
+
+  .steps { counter-reset: s; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+  .step { counter-increment: s; background: var(--surface); border: 1px solid var(--line); padding: 1.5rem; position: relative; }
+  .step::before { content: counter(s, decimal-leading-zero); font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 2rem; color: var(--amber); display: block; margin-bottom: .4rem; }
+  .step h3 { font-family: "Barlow Condensed", sans-serif; font-size: 1.3rem; text-transform: uppercase; margin: 0 0 .4rem; }
+  .step p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.2rem; }
+  .tier { background: var(--surface); border: 1px solid var(--line); padding: 1.6rem 1.5rem; display: flex; flex-direction: column; }
+  .tier.feature { border-color: var(--amber); border-width: 2px; }
+  .tier h3 { font-family: "Barlow Condensed", sans-serif; font-size: 1.4rem; text-transform: uppercase; margin: 0 0 .2rem; }
+  .price { font-family: "IBM Plex Mono", monospace; font-size: 1.7rem; font-weight: 600; color: var(--amber); margin: .2rem 0 .8rem; }
+  .price small { font-size: .85rem; color: var(--muted); }
+  .tier ul { margin: 0 0 1rem; padding-left: 1.1rem; color: var(--muted); font-size: .95rem; }
+  .tier li { margin-bottom: .4rem; }
+  .tier li strong { color: var(--ink); }
+  .founder { background: linear-gradient(90deg, rgba(240,166,46,.14), transparent 70%); border: 1px solid var(--amber-deep); padding: 1.3rem 1.5rem; margin-top: 1.4rem; }
+  .founder strong { color: var(--amber); }
+
+  .math { background: var(--surface); border-left: 4px solid var(--bad); padding: 1.4rem 1.6rem; margin-top: 2rem; font-size: 1.15rem; max-width: 44rem; }
+  .math .mono { font-family: "IBM Plex Mono", monospace; }
+  .math strong { color: var(--amber); }
+
+  .faq dt { font-weight: 700; margin-top: 1.2rem; font-size: 1.05rem; }
+  .faq dt::before { content: "“"; color: var(--amber); } .faq dt::after { content: "”"; color: var(--amber); }
+  .faq dd { margin: .3rem 0 0; color: var(--muted); max-width: 42rem; }
+
+  .final { text-align: center; padding: 4.5rem 0 3rem; }
+  .final h2 { font-size: clamp(2.2rem, 6vw, 3.4rem); }
+  .final p { color: var(--muted); max-width: 34rem; margin: 0 auto 1.8rem; font-size: 1.15rem; }
+  .final p strong { color: var(--ink); }
+
+  footer { border-top: 1px solid var(--line); margin-top: 3rem; padding: 1.6rem 0 2.4rem; color: var(--muted); font-size: .85rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .pain, .step, .tier { transition: transform .15s ease; }
+    .pain:hover, .step:hover, .tier:hover { transform: translateY(-2px); }
+  }
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<div class="wrap">
+
+<header class="hero">
+  <p class="brand">Signature Dispatch</p>
+  <h1>Who answers your phone <span class="amber">at 2 AM?</span></h1>
+  <p class="standfirst">You're under a car. You're driving. You're finally asleep. The phone rings — and that's a <strong>$150–$250 cash call</strong> deciding whether to wait for your voicemail… or dial the next tow company on the list. <strong>They don't wait.</strong></p>
+  <div class="cta-row">
+    <a class="btn btn-amber" href="#demo">Talk to your AI dispatcher →</a>
+    <a class="btn btn-ghost" href="#pricing">See pricing</a>
+  </div>
+</header>
+</div>
+
+<div class="statband"><div class="wrap"><div class="stats">
+  <div class="stat"><span class="n">62%</span><span class="l">of calls to small businesses never reach a live person</span></div>
+  <div class="stat"><span class="n">85%</span><span class="l">of callers who hit voicemail never call back — they call your competitor</span></div>
+  <div class="stat"><span class="n">$4,500</span><span class="l">lost per month by missing just ONE call a day at $150 a tow</span></div>
+  <div class="stat"><span class="n">40–50%</span><span class="l">of towing demand comes after hours — the calls worth the most</span></div>
+</div></div></div>
+
+<div class="wrap">
+
+<section>
+  <h2>Every missed call is a job you paid to lose</h2>
+  <p class="lead">You already bought the truck, the insurance, the fuel, the Google listing. The call came. <strong>Nobody could pick up.</strong> Sound familiar?</p>
+  <div class="pains">
+    <div class="pain"><h3>You're on a hook</h3><p>Two hands on a winch line at midnight. The phone buzzes in your pocket. <strong>That caller is already dialing the next listing.</strong></p></div>
+    <div class="pain"><h3>The night shift is you</h3><p>Or your wife. Or a driver who "answers when he can." A graveyard dispatcher costs <strong>$60–90K a year</strong> — and still misses the 3 AM rollover.</p></div>
+    <div class="pain"><h3>Answering services take messages</h3><p>$400–800 a month and they can't quote your rates, can't book the job, can't text your driver. <strong>You still wake up.</strong></p></div>
+    <div class="pain"><h3>Rotation lists don't forgive</h3><p>Miss enough police rotation calls and you're <strong>off the list</strong> — that's not one lost job, that's a whole revenue stream.</p></div>
+  </div>
+
+  <div class="demo" id="demo">
+    <h2 style="margin-top:0">Don't take our word for it.<br>Talk to Amber right now.</h2>
+    <p class="lead" style="margin-bottom:.4rem">This is the actual product. Pick your market, tap the orb in the corner, and pretend you're broke down — Amber will take your location, ask the right questions about your vehicle, quote a real rate, and book the job. <strong>She answers like this 24/7/365 and never calls in sick.</strong></p>
+    <div class="citypick" id="citypick">
+      <button class="city active" data-agent="agent_0801m0wg542repk9nk7wagenmktr" data-name="Atlanta">Atlanta</button>
+      <button class="city" data-agent="agent_9001m0wg55zpf7vskabzrhkh7xp7" data-name="Washington DC">Washington DC</button>
+      <button class="city" data-agent="agent_0201m0wg5819e7g8yfb9477x16sk" data-name="Dallas–Fort Worth">Dallas–Fort Worth</button>
+      <button class="city" data-agent="agent_2001m0vc0s89f7prnfsnf1bdtwqn" data-name="Central Florida">Central Florida</button>
+    </div>
+    <div id="widget-slot"></div>
+    <p class="hint"><strong>Look for the call button in the bottom-right corner</strong> — tap it and start talking. Try to trip her up. Ask what a 15-mile tow costs. Tell her your car's lowered. Ask if she's a robot.</p>
+    <p class="fallback">Widget not loading? <a id="fallback-link" href="https://elevenlabs.io/app/talk-to?agent_id=agent_0801m0wg542repk9nk7wagenmktr" target="_blank" rel="noopener">Open the Atlanta demo in a new tab →</a></p>
+  </div>
+</section>
+
+<section>
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step"><h3>She answers in one ring</h3><p>Every call, first ring, 24/7. Gets the caller's location (with a GPS text link), the vehicle, and what they need. Calm, fast, human-sounding — and bilingual.</p></div>
+    <div class="step"><h3>Quotes YOUR rates, books the job</h3><p>Your hook fee, your per-mile, your after-hours fee — quoted confidently, never discounted. Job details captured and confirmed while the caller is still on the line.</p></div>
+    <div class="step"><h3>Your driver gets a text</h3><p>Location, vehicle, service, quote, callback number — on your phone in seconds. You only wake up for real jobs. Works with Towbook.</p></div>
+  </div>
+  <div class="founder" style="margin-top:1.6rem">
+    <strong>Going live takes one evening.</strong> You give us your rate sheet (15 minutes), we build your dispatcher the same day, you dial <span style="font-family:'IBM Plex Mono',monospace">*71</span> on your phone — done. No new hardware, no new number, no contract. Dial <span style="font-family:'IBM Plex Mono',monospace">*73</span> and it's off.
+  </div>
+</section>
+
+<section id="pricing">
+  <h2>What it costs</h2>
+  <p class="lead">A human dispatcher runs <strong>$3,500+ a month</strong> — and one person can't cover 24/7. This covers every hour of every night for less than one saved call a week.</p>
+  <div class="tiers">
+    <div class="tier">
+      <h3>Missed-Call Rescue</h3>
+      <div class="price">$197<small>/mo</small></div>
+      <ul>
+        <li>Your phone rings first — <strong>nothing changes</strong></li>
+        <li>Amber catches only the calls you <strong>don't</strong> pick up</li>
+        <li>Instant job text to you or your driver</li>
+        <li>Can't cost you a call — only catch the ones you were losing</li>
+      </ul>
+    </div>
+    <div class="tier feature">
+      <h3>AI Dispatcher</h3>
+      <div class="price">$497<small>/mo + $497 setup</small></div>
+      <ul>
+        <li><strong>Every call answered first ring, 24/7</strong></li>
+        <li>Quotes your rates, books jobs, texts drivers</li>
+        <li>Motor club &amp; impound call handling</li>
+        <li>Bilingual English/Spanish</li>
+        <li>No contract — cancel anytime</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <h3>Tow Company OS</h3>
+      <div class="price">$697+<small>/mo</small></div>
+      <ul>
+        <li>Everything in AI Dispatcher</li>
+        <li>Google review engine + follow-up texts</li>
+        <li>Website + monthly performance report</li>
+        <li>The full front office, handled</li>
+      </ul>
+    </div>
+  </div>
+  <div class="founder">
+    <strong>Founding Client seats — first 5 companies per metro:</strong> the full AI Dispatcher at <strong>$297/month locked for life, setup free</strong>, in exchange for your honest results as a case study. When the 5 seats in your market are gone, they're gone.
+  </div>
+  <div class="math">
+    Miss 1 call a day <span class="mono">× $150</span> = <span class="mono">$4,500/month</span> gone.<br>
+    Catching them costs <strong><span class="mono">$497</span></strong>. <strong>One saved call a week pays for it.</strong>
+  </div>
+</section>
+
+<section>
+  <h2>The questions every owner asks</h2>
+  <dl class="faq">
+    <dt>I don't want a robot talking to my customers</dt>
+    <dd>You just talked to her. Did she lose the job? Now compare her to what your 2 AM callers get today: voicemail — and 85% of them hang up and call your competitor.</dd>
+    <dt>What if it messes up a call?</dt>
+    <dd>Start on Missed-Call Rescue: your phone rings first, exactly like today. Amber only picks up calls that were headed to voicemail. She can't lose you a call you were getting — she can only catch ones you weren't.</dd>
+    <dt>What about my dispatcher / my wife who answers now?</dt>
+    <dd>Keep them. Amber is the backup that never sleeps — she takes the 2-to-6 AM shift so they don't have to.</dd>
+    <dt>Am I locked into a contract?</dt>
+    <dd>No. Month to month, cancel anytime, and call forwarding turns off with one dial code. We keep clients by catching jobs, not by contracts.</dd>
+  </dl>
+</section>
+
+<section class="final">
+  <h2>Your phone is ringing <span style="color:var(--amber)">right now.</span></h2>
+  <p><strong>Text or call the person who sent you this page</strong> and say the word — your AI dispatcher can be answering your missed calls <strong>tonight</strong>. Founding seats go by market, first come, first served.</p>
+  <a class="btn btn-amber" href="#demo">Try the demo one more time ↑</a>
+</section>
+
+<footer>
+  Signature Dispatch · a Signature Branding &amp; Marketing company · Winter Haven, FL + Atlanta, GA · Demo companies shown (Sunshine, Metro Peach, District Line, Metroplex Star) are fictional demonstrations of the product.
+</footer>
+
+</div>
+
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<script>
+  var slot = document.getElementById("widget-slot");
+  var fallback = document.getElementById("fallback-link");
+  function mount(agentId, name) {
+    slot.innerHTML = "";
+    var w = document.createElement("elevenlabs-convai");
+    w.setAttribute("agent-id", agentId);
+    slot.appendChild(w);
+    fallback.href = "https://elevenlabs.io/app/talk-to?agent_id=" + agentId;
+    fallback.textContent = "Open the " + name + " demo in a new tab →";
+  }
+  document.getElementById("citypick").addEventListener("click", function (e) {
+    var btn = e.target.closest(".city");
+    if (!btn) return;
+    document.querySelectorAll(".city").forEach(function (b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+    mount(btn.dataset.agent, btn.dataset.name);
+  });
+  mount("agent_0801m0wg542repk9nk7wagenmktr", "Atlanta");
+</script>
+</body>
+</html>
