@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signature Dispatch — Get Set Up</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #14161A; --surface: #1C1F25; --surface-2: #22252C;
+    --ink: #ECEAE3; --muted: #A0A4AC;
+    --line: #2C3038; --line-strong: #3E434D;
+    --amber: #F0A62E; --amber-deep: #C07A0E; --good: #5CB588; --bad: #E07B62;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: "Barlow", Arial, sans-serif; font-size: 1rem; line-height: 1.55; margin: 0; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 0 1.25rem 5rem; }
+  .hazard { height: 10px; background: repeating-linear-gradient(-45deg, var(--amber) 0 16px, transparent 16px 32px); }
+  header { padding: 3rem 0 1.5rem; }
+  .brand { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: .18em; text-transform: uppercase; color: var(--amber); margin: 0 0 1.4rem; }
+  h1 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: clamp(2.4rem, 7vw, 3.6rem); line-height: 1; text-transform: uppercase; margin: 0 0 .8rem; }
+  .standfirst { color: var(--muted); font-size: 1.1rem; max-width: 36rem; margin: 0; }
+  .standfirst strong { color: var(--ink); }
+
+  h2 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1.5rem; text-transform: uppercase; letter-spacing: .04em; color: var(--amber); margin: 2.5rem 0 .9rem; display: flex; align-items: center; gap: .7rem; }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line-strong); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem 1.2rem; }
+  .field { display: flex; flex-direction: column; gap: .3rem; }
+  .field.wide { grid-column: 1 / -1; }
+  label { font-size: .82rem; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
+  label .req { color: var(--amber); }
+  input[type=text], input[type=tel], input[type=email], input[type=number], textarea, select {
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong);
+    border-radius: 4px; padding: .6rem .7rem; font-family: "Barlow", Arial, sans-serif; font-size: 1rem; width: 100%;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--amber); }
+  textarea { resize: vertical; min-height: 3.2rem; }
+  .money { position: relative; }
+  .money::before { content: "$"; position: absolute; left: .7rem; top: .62rem; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+  .money input { padding-left: 1.5rem; font-family: "IBM Plex Mono", monospace; }
+
+  .checks { display: flex; flex-wrap: wrap; gap: .8rem 2rem; margin: .4rem 0 0; }
+  .check { display: flex; align-items: center; gap: .5rem; font-size: .98rem; }
+  .check input { width: 1.05rem; height: 1.05rem; accent-color: var(--amber); }
+
+  .packs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .9rem; }
+  .pack { border: 2px solid var(--line-strong); border-radius: 6px; padding: 1rem 1.1rem; cursor: pointer; background: var(--surface); }
+  .pack input { position: absolute; opacity: 0; }
+  .pack.sel { border-color: var(--amber); background: var(--surface-2); }
+  .pack .pname { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1.15rem; text-transform: uppercase; }
+  .pack .pprice { font-family: "IBM Plex Mono", monospace; color: var(--amber); font-size: 1.05rem; }
+  .pack .pnote { font-size: .82rem; color: var(--muted); }
+
+  .cond { display: none; }
+  .cond.open { display: block; }
+
+  .submitrow { margin-top: 2.5rem; }
+  .btn { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 1.35rem; text-transform: uppercase; letter-spacing: .05em; background: var(--amber); color: #14161A; border: none; border-radius: 4px; padding: .95rem 2.4rem; cursor: pointer; }
+  .btn:hover { background: #F6BE62; }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .finish-note { color: var(--muted); font-size: .92rem; margin-top: .8rem; }
+  #errmsg { color: var(--bad); font-weight: 600; margin-top: 1rem; display: none; }
+
+  #done { display: none; text-align: center; padding: 5rem 0; }
+  #done h1 { font-size: clamp(2.4rem, 7vw, 3.4rem); }
+  #done p { color: var(--muted); font-size: 1.15rem; max-width: 30rem; margin: 0 auto 1rem; }
+  #done p strong { color: var(--ink); }
+  footer { border-top: 1px solid var(--line); margin-top: 3rem; padding: 1.4rem 0; color: var(--muted); font-size: .82rem; }
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<div class="wrap">
+
+<div id="done">
+  <p class="brand">Signature Dispatch</p>
+  <h1>You're on the board. 🚛</h1>
+  <p><strong>We got everything.</strong> Your AI dispatcher is being built with your name and your rates — expect a text from us today with your dispatch number and the 2-minute forwarding step.</p>
+  <p>Questions in the meantime? Text the person who set you up.</p>
+</div>
+
+<div id="formview">
+<header>
+  <p class="brand">Signature Dispatch</p>
+  <h1>Let's build your dispatcher</h1>
+  <p class="standfirst">Ten minutes of answers is all we need — <strong>your AI dispatcher answers with your name and your exact rates, tonight.</strong> Fields marked <span style="color:var(--amber)">*</span> are required.</p>
+</header>
+
+<form id="intake" novalidate>
+
+<h2>Your company</h2>
+<div class="grid">
+  <div class="field"><label>Company name <span class="req">*</span></label><input type="text" name="company_name" required></div>
+  <div class="field"><label>How should the phone be answered? <span class="req">*</span></label><input type="text" name="greeting_name" placeholder="&quot;Thanks for calling ___&quot;" required></div>
+  <div class="field"><label>Your name <span class="req">*</span></label><input type="text" name="owner_name" required></div>
+  <div class="field"><label>Your cell <span class="req">*</span></label><input type="tel" name="owner_cell" required></div>
+  <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="owner_email" required></div>
+  <div class="field"><label>Years in business</label><input type="text" name="years_in_business"></div>
+  <div class="field wide"><label>Coverage area — cities, counties, highways, the way you'd say it to a caller <span class="req">*</span></label><textarea name="coverage" required></textarea></div>
+  <div class="field"><label>Your trucks <span class="req">*</span></label><input type="text" name="fleet_description" placeholder="e.g. 2 flatbeds, 1 wheel-lift" required></div>
+  <div class="field"><label>Home city &amp; state <span class="req">*</span></label><input type="text" name="city_state" placeholder="e.g. Marietta, Georgia" required></div>
+  <div class="field"><label>Typical arrival window</label><input type="text" name="eta_window" value="25 to 35 minutes"></div>
+  <div class="field"><label>Who sent you this form?</label><input type="text" name="referred_by" placeholder="Jimmy / Ken / other"></div>
+</div>
+
+<h2>Your light-duty rates</h2>
+<div class="grid">
+  <div class="field"><label>Hook-up fee <span class="req">*</span></label><div class="money"><input type="number" name="hookup" required></div></div>
+  <div class="field"><label>Miles included</label><input type="number" name="included_miles" value="5"></div>
+  <div class="field"><label>Per mile after that <span class="req">*</span></label><div class="money"><input type="number" name="per_mile" required></div></div>
+  <div class="field"><label>After-hours fee <span class="req">*</span></label><div class="money"><input type="number" name="afterhours_fee" required></div></div>
+  <div class="field"><label>After-hours window</label><input type="text" name="afterhours_window" value="9 PM to 7 AM"></div>
+  <div class="field"><label>Jump start <span class="req">*</span></label><div class="money"><input type="number" name="jump_start" required></div></div>
+  <div class="field"><label>Lockout <span class="req">*</span></label><div class="money"><input type="number" name="lockout" required></div></div>
+  <div class="field"><label>Tire change</label><div class="money"><input type="number" name="tire_change"></div></div>
+  <div class="field"><label>Fuel delivery</label><div class="money"><input type="number" name="fuel_delivery"></div></div>
+  <div class="field"><label>Winch-out from</label><div class="money"><input type="number" name="winchout_min"></div></div>
+  <div class="field"><label>Winch-out up to</label><div class="money"><input type="number" name="winchout_max"></div></div>
+  <div class="field"><label>Accident hook-up</label><div class="money"><input type="number" name="accident_hookup"></div></div>
+</div>
+
+<h2>Services &amp; facilities</h2>
+<div class="checks">
+  <label class="check"><input type="checkbox" name="heavy_duty" id="ck-heavy"> We run heavy-duty (over 15,000 lbs)</label>
+  <label class="check"><input type="checkbox" name="has_impound" id="ck-impound"> We have an impound / storage lot</label>
+  <label class="check"><input type="checkbox" name="police_rotation"> We're on a police rotation list</label>
+</div>
+<div class="cond" id="impound-fields">
+  <div class="grid" style="margin-top:1rem">
+    <div class="field wide"><label>Impound lot address + release hours</label><input type="text" name="impound_details" placeholder="e.g. 2200 Recker Hwy — releases 8 AM to 6 PM daily"></div>
+    <div class="field"><label>Admin fee</label><div class="money"><input type="number" name="impound_admin_fee"></div></div>
+    <div class="field"><label>Storage per day</label><div class="money"><input type="number" name="impound_daily_storage"></div></div>
+  </div>
+</div>
+<div class="grid" style="margin-top:1rem">
+  <div class="field wide"><label>Motor clubs you accept</label><input type="text" name="motor_clubs" value="AAA, Agero, and most insurance roadside programs"></div>
+</div>
+
+<h2>Call routing</h2>
+<div class="grid">
+  <div class="field"><label>Text new jobs to <span class="req">*</span></label><input type="tel" name="job_text_number" required></div>
+  <div class="field"><label>Transfer heavy/police calls to</label><input type="tel" name="transfer_number"></div>
+  <div class="field"><label>Cell carrier on your business line</label><input type="text" name="phone_carrier" placeholder="Verizon / AT&amp;T / T-Mobile / other"></div>
+  <div class="field wide"><label>Anything else we should know?</label><textarea name="notes"></textarea></div>
+</div>
+
+<h2>Your package</h2>
+<div class="packs" id="packs">
+  <label class="pack sel"><input type="radio" name="package" value="Founding Client — $297/mo locked" checked>
+    <span class="pname">Founding Client</span><span class="pprice">$297/mo locked</span>
+    <span class="pnote">Full AI Dispatcher, setup free, case-study deal — 5 per metro</span></label>
+  <label class="pack"><input type="radio" name="package" value="Missed-Call Rescue — $197/mo">
+    <span class="pname">Missed-Call Rescue</span><span class="pprice">$197/mo</span>
+    <span class="pnote">AI catches only the calls you don't answer</span></label>
+  <label class="pack"><input type="radio" name="package" value="AI Dispatcher — $497/mo + $497 setup">
+    <span class="pname">AI Dispatcher</span><span class="pprice">$497/mo + setup</span>
+    <span class="pnote">Every call, first ring, 24/7</span></label>
+</div>
+
+<div class="submitrow">
+  <button type="submit" class="btn" id="sendbtn">Build my dispatcher →</button>
+  <p class="finish-note">Submitting sends your setup details straight to our build team. No payment is collected on this form.</p>
+  <p id="errmsg">Couldn't send just now — tap the button again, or screenshot your answers and text them to the person who sent you this page.</p>
+</div>
+
+</form>
+</div>
+
+<footer>Signature Dispatch · a Signature Branding &amp; Marketing company · Winter Haven, FL + Atlanta, GA</footer>
+</div>
+
+<script>
+  var WEBHOOK_URL = "__WEBHOOK_URL__";  // set at deploy time
+
+  document.getElementById("ck-impound").addEventListener("change", function () {
+    document.getElementById("impound-fields").classList.toggle("open", this.checked);
+  });
+  var packs = document.getElementById("packs");
+  packs.addEventListener("click", function (e) {
+    var p = e.target.closest(".pack"); if (!p) return;
+    packs.querySelectorAll(".pack").forEach(function (x) { x.classList.remove("sel"); });
+    p.classList.add("sel"); p.querySelector("input").checked = true;
+  });
+
+  document.getElementById("intake").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var form = e.target;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    var d = {};
+    new FormData(form).forEach(function (v, k) { d[k] = String(v).trim(); });
+    d.heavy_duty = form.heavy_duty.checked ? "yes" : "no";
+    d.has_impound = form.has_impound.checked ? "yes" : "no";
+    d.police_rotation = form.police_rotation.checked ? "yes" : "no";
+
+    var lines = [
+      "NEW SIGNATURE DISPATCH INTAKE — " + d.company_name,
+      "Package: " + d.package,
+      "Owner: " + d.owner_name + " · " + d.owner_cell + " · " + d.owner_email,
+      "Referred by: " + (d.referred_by || "-"),
+      "Carrier: " + (d.phone_carrier || "-"),
+      "Police rotation: " + d.police_rotation,
+      "Notes: " + (d.notes || "-"),
+      "",
+      "--- PASTE-READY YAML ---",
+      "company_name: " + d.company_name,
+      "greeting_name: " + d.greeting_name,
+      "dispatcher_name: Amber",
+      "city_base: " + (d.city_state.split(",")[0] || d.city_state),
+      "state: " + (d.city_state.split(",")[1] || "").trim(),
+      "coverage: " + d.coverage.replace(/\s+/g, " "),
+      "years_in_business: " + (d.years_in_business || "several"),
+      "fleet_description: " + d.fleet_description,
+      "eta_window: " + (d.eta_window || "25 to 35 minutes"),
+      "payment_terms: cash or card, collected by the driver on arrival",
+      "hookup: " + d.hookup,
+      "included_miles: " + (d.included_miles || "5"),
+      "per_mile: " + d.per_mile,
+      "afterhours_fee: " + d.afterhours_fee,
+      "afterhours_window: " + (d.afterhours_window || "9 PM to 7 AM"),
+      "jump_start: " + d.jump_start,
+      "lockout: " + d.lockout,
+      "tire_change: " + (d.tire_change || d.lockout),
+      "fuel_delivery: " + (d.fuel_delivery || d.jump_start),
+      "winchout_min: " + (d.winchout_min || "150"),
+      "winchout_max: " + (d.winchout_max || "250"),
+      "accident_hookup: " + (d.accident_hookup || d.hookup),
+      "heavy_duty: " + d.heavy_duty,
+      "heavy_callback_minutes: 5",
+      "has_impound: " + d.has_impound,
+      d.has_impound === "yes" ? "impound_address: " + (d.impound_details || "TBD") : "",
+      d.has_impound === "yes" ? "impound_hours: see address line" : "",
+      d.has_impound === "yes" ? "impound_admin_fee: " + (d.impound_admin_fee || "35") : "",
+      d.has_impound === "yes" ? "impound_daily_storage: " + (d.impound_daily_storage || "45") : "",
+      "motor_clubs: " + (d.motor_clubs || "AAA and most insurance roadside programs"),
+      "job_text_number: " + d.job_text_number,
+      "transfer_number: " + (d.transfer_number || d.owner_cell),
+      "owner_name: " + d.owner_name,
+      "owner_email: " + d.owner_email
+    ].filter(Boolean);
+    d.summary = lines.join("\n");
+
+    var btn = document.getElementById("sendbtn");
+    btn.disabled = true; btn.textContent = "Sending…";
+    fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(d)
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      document.getElementById("formview").style.display = "none";
+      document.getElementById("done").style.display = "block";
+      window.scrollTo(0, 0);
+    }).catch(function () {
+      btn.disabled = false; btn.textContent = "Build my dispatcher →";
+      document.getElementById("errmsg").style.display = "block";
+    });
+  });
+</script>
+</body>
+</html>

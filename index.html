@@ -145,7 +145,7 @@
     </div>
     <div id="widget-slot"></div>
     <p class="hint"><strong>Look for the call button in the bottom-right corner</strong> — tap it and start talking. Try to trip her up. Ask what a 15-mile tow costs. Tell her your car's lowered. Ask if she's a robot.</p>
-    <p class="fallback">Widget not loading? <a id="fallback-link" href="https://elevenlabs.io/app/talk-to?agent_id=agent_0801m0wg542repk9nk7wagenmktr" target="_blank" rel="noopener">Open the Atlanta demo in a new tab →</a></p>
+    <p class="fallback">Trouble connecting? Text the person who sent you this page — they'll call you with Amber on the line.</p>
   </div>
 </section>
 
@@ -235,14 +235,11 @@
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 <script>
   var slot = document.getElementById("widget-slot");
-  var fallback = document.getElementById("fallback-link");
   function mount(agentId, name) {
     slot.innerHTML = "";
     var w = document.createElement("elevenlabs-convai");
     w.setAttribute("agent-id", agentId);
     slot.appendChild(w);
-    fallback.href = "https://elevenlabs.io/app/talk-to?agent_id=" + agentId;
-    fallback.textContent = "Open the " + name + " demo in a new tab →";
   }
   document.getElementById("citypick").addEventListener("click", function (e) {
     var btn = e.target.closest(".city");
