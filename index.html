@@ -289,5 +289,20 @@
   });
   mount("agent_0801m0wg542repk9nk7wagenmktr", "Atlanta");
 </script>
+<script>
+  // Keep the video-first hero on every load: smooth-scroll CTAs without leaving
+  // a #anchor in the URL, and don't let the browser restore a prior scroll spot.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var t = document.querySelector(a.getAttribute('href'));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.replaceState(null, '', location.pathname + location.search);
+  });
+  if (location.hash) { history.replaceState(null, '', location.pathname + location.search); window.scrollTo(0, 0); }
+</script>
 </body>
 </html>
