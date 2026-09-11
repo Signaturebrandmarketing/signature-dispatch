@@ -59,6 +59,9 @@
   .demo .hint { color: var(--muted); font-size: .95rem; margin: .8rem 0 0; }
   .demo .hint strong { color: var(--ink); }
   #widget-slot { min-height: 40px; margin-top: 1rem; }
+  .pickfirst { margin: 0; padding: .8rem 1rem; border: 1px dashed rgba(255,255,255,.22);
+    border-radius: 8px; font-size: .95rem; opacity: .8; }
+  .pickfirst strong { color: var(--amber); }
   .fallback { margin-top: .6rem; font-size: .95rem; }
   .fallback a { color: var(--amber); }
 
@@ -247,13 +250,13 @@
     <h2 style="margin-top:0">Don't take our word for it.<br>Talk to Amber right now.</h2>
     <p class="lead" style="margin-bottom:.4rem">This is the actual product. Pick your market, tap the orb in the corner, and pretend you're broke down — Amber will take your location, ask the right questions about your vehicle, quote a real rate, and book the job. <strong>She answers like this 24/7/365 and never calls in sick.</strong></p>
     <div class="citypick" id="citypick">
-      <button class="city active" data-agent="agent_0801m0wg542repk9nk7wagenmktr" data-name="Atlanta">Atlanta</button>
+      <button class="city" data-agent="agent_0801m0wg542repk9nk7wagenmktr" data-name="Atlanta">Atlanta</button>
       <button class="city" data-agent="agent_9001m0wg55zpf7vskabzrhkh7xp7" data-name="Washington DC">Washington DC</button>
       <button class="city" data-agent="agent_0201m0wg5819e7g8yfb9477x16sk" data-name="Dallas–Fort Worth">Dallas–Fort Worth</button>
       <button class="city" data-agent="agent_2001m0vc0s89f7prnfsnf1bdtwqn" data-name="Central Florida">Central Florida</button>
     </div>
-    <div id="widget-slot"></div>
-    <p class="hint"><strong>Look for the call button in the bottom-right corner</strong> — tap it and start talking. Try to trip her up. Ask what a 15-mile tow costs. Tell her your car's lowered. Ask if she's a robot.</p>
+    <div id="widget-slot"><p class="pickfirst">↑ <strong>Pick your market</strong> to bring up the dispatcher.</p></div>
+    <p class="hint" id="demohint">Choose the market closest to you above — she'll know the roads, the rates, and the local after-hours window.</p>
     <p class="fallback">Trouble connecting? Text the person who sent you this page — they'll call you with Amber on the line.</p>
   </div>
 </section>
@@ -288,12 +291,20 @@
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 <script>
   var slot = document.getElementById("widget-slot");
+  var hint = document.getElementById("demohint");
+
   function mount(agentId, name) {
     slot.innerHTML = "";
     var w = document.createElement("elevenlabs-convai");
     w.setAttribute("agent-id", agentId);
     slot.appendChild(w);
+    if (hint) {
+      hint.innerHTML = "<strong>Now tap the call button in the bottom-right corner</strong> — you'll be talking to " +
+        name + "'s dispatcher. Try to trip her up. Ask what a 15-mile tow costs. " +
+        "Tell her your car's lowered. Ask if she's a robot.";
+    }
   }
+
   document.getElementById("citypick").addEventListener("click", function (e) {
     var btn = e.target.closest(".city");
     if (!btn) return;
@@ -301,7 +312,10 @@
     btn.classList.add("active");
     mount(btn.dataset.agent, btn.dataset.name);
   });
-  mount("agent_0801m0wg542repk9nk7wagenmktr", "Atlanta");
+
+  // Deliberately NO agent mounted on load. Previously Atlanta was mounted by
+  // default, so a Central Florida prospect could tap the orb and end up talking
+  // to the Atlanta dispatcher without ever choosing a market.
 </script>
 <script>
   // Keep the video-first hero on every load: smooth-scroll CTAs without leaving
